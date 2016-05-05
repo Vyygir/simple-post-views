@@ -5,7 +5,7 @@
   * Version: 0.2
   * Author: Matt Royce
   * Author URI: http://www.mattroyce.org/
-  * Description: A simple way to add views to individual posts, with support for custom post types
+  * Description: A simple way to add views to individual posts
 ***/
 	class Simple_Post_Views {
 		private static $post_types = array();
