@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Post Views
  * Plugin URI: https://github.com/Vyygir/simple-post-views
- * Version: 0.2.1
+ * Version: 0.2
  * Author: Matt Royce
  * Author URI: http://www.mattroyce.org/
  * Description: A simple way to add views to individual posts
@@ -43,7 +43,7 @@ class Simple_Post_Views {
 			if ($query->is_singular && (is_int($query->queried_object_id) || isset($query->query['name']) || isset($query->query_vars['page_id']))) {
 				if (is_int($query->queried_object_id)) {
 					$id = $query->queried_object_id;
-				} elseif (isset($query->query_vars['page_id'])) {
+				} elseif (isset($query->query_vars['page_id']) && $query->query_vars['page_id']) {
 					$id = $query->query_vars['page_id'];
 				} else {
 					$_post = get_page_by_path($query->query['name'], OBJECT, self::$post_types);
