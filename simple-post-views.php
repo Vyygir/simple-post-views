@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Post Views
  * Plugin URI: https://github.com/Vyygir/simple-post-views
- * Version: 0.2
+ * Version: 0.2.2
  * Author: Matt Royce
  * Author URI: http://www.mattroyce.org/
  * Description: A simple way to add views to individual posts
