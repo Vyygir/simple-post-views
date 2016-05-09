@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Post Views
  * Plugin URI: https://github.com/Vyygir/simple-post-views
- * Version: 0.2.2
+ * Version: 0.2.3
  * Author: Matt Royce
  * Author URI: http://www.mattroyce.org/
  * Description: A simple way to add views to individual posts
@@ -36,21 +36,25 @@ class Simple_Post_Views {
 	}
 
 	public static function add_post_view($query) {
-		if (!is_admin()) {
+		if (!is_admin() && !is_404()) {
 			self::$post_types['post'] = 'post';
 			self::$post_types['page'] = 'page';
 
 			if ($query->is_singular && (is_int($query->queried_object_id) || isset($query->query['name']) || isset($query->query_vars['page_id']))) {
+				$id = false;
+
 				if (is_int($query->queried_object_id)) {
 					$id = $query->queried_object_id;
 				} elseif (isset($query->query_vars['page_id']) && $query->query_vars['page_id']) {
 					$id = $query->query_vars['page_id'];
-				} else {
+				} elseif (isset($query->query['name'])) {
 					$_post = get_page_by_path($query->query['name'], OBJECT, self::$post_types);
-					$id = $_post->ID;
+					if ($_post) $id = $_post->ID;
 				}
 
-				update_post_meta($id, 'spv_views', (self::get_post_views($id) + 1));
+				if ($id) {
+					update_post_meta($id, 'spv_views', (self::get_post_views($id) + 1));
+				}
 			} elseif ($query->is_posts_page) {
 				$id = get_option('page_for_posts');
 				update_post_meta($id, 'spv_views', (self::get_post_views($id) + 1));
@@ -86,6 +90,8 @@ class Simple_Post_Views {
 	}
 }
 
-$spv = new Simple_Post_Views();
+global $simple_post_views;
+$simple_post_views = new Simple_Post_Views();
+
 add_action('wp_loaded', array('Simple_Post_Views', 'build_post_types'));
 add_action('admin_init', array('Simple_Post_Views', 'init'));
